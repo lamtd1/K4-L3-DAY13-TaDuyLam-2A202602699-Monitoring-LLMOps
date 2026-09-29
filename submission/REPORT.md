@@ -7,10 +7,10 @@
 - **Họ và tên:** Tạ Duy Lam
 - **MSSV:** 2A202602699
 - **Lớp:** K4-L3A
-- **Repository URL:** _(điền URL repo GitHub cá nhân trước khi nộp)_
-- **Commit SHA cuối:** _(điền sau khi commit lần cuối — chạy `git log -1 --oneline`)_
+- **Repository URL:** https://github.com/lamtd1/K4-L3-DAY13-TaDuyLam-2A202602699-Monitoring-LLMOps.git
+- **Commit SHA cuối:** 152510f
 - **Challenge ID:** `day13-k4-l3a-monitoring-llmops-v1`
-- **Tên project Langfuse cá nhân:** `day13-k4-l3a-2A202602699` _(xác nhận đúng tên project thật trong tài khoản Langfuse của bạn trước khi nộp)_
+- **Tên project Langfuse cá nhân:** `day13-k4-l3a-2A202602699` 
 
 ## 2. Evidence index
 
