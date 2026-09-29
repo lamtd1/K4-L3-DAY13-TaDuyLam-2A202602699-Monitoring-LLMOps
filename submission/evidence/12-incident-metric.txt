@@ -1,0 +1,17 @@
+Challenge ID: day13-k4-l3a-monitoring-llmops-v1
+Incident window (UTC): ~2026-09-29T09:42:53Z to 2026-09-29T09:43:07Z
+
+Baseline /metrics (before inject_incident.py), traffic=20:
+{"traffic":20,"latency_p50":398.0,"latency_p95":2305.0,"latency_p99":2305.0,"ttft_p95":55.0,...}
+
+Post-incident /metrics (after 5 challenge requests), traffic=25:
+{"traffic":25,"latency_p50":416.0,"latency_p95":2664.0,"latency_p99":2665.0,"ttft_p95":55.0,...}
+
+Per-request server-side latency for the 5 challenge requests (feature=monitoring), from data/logs.jsonl:
+req-478abc54 latency_ms= 2665 tool_name= retrieval tool_success= True
+req-17526920 latency_ms= 2661 tool_name= retrieval tool_success= True
+req-f284c6f6 latency_ms= 2659 tool_name= retrieval tool_success= True
+req-04ccd391 latency_ms= 2660 tool_name= retrieval tool_success= True
+req-b40a39bb latency_ms= 2664 tool_name= retrieval tool_success= True
+
+Challenge threshold (config/challenge.json): latency_threshold_ms=2000 -> all 5 requests breach this.

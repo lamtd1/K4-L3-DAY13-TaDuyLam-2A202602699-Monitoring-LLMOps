@@ -16,16 +16,35 @@ class ManagedPrompt:
         )
 
 
+class RecordingObservation:
+    def __init__(self, name: str, as_type: str, start_kwargs: dict) -> None:
+        self.name = name
+        self.as_type = as_type
+        self.start_kwargs = start_kwargs
+        self.update_calls: list[dict] = []
+
+    def update(self, **kwargs) -> "RecordingObservation":
+        self.update_calls.append(kwargs)
+        return self
+
+
 class RecordingLangfuseClient:
     def __init__(self) -> None:
         self.prompt = ManagedPrompt()
         self.span_updates: list[dict] = []
+        self.observations: list[RecordingObservation] = []
 
     def get_prompt(self, name: str, **kwargs):
         return self.prompt
 
     def update_current_span(self, **kwargs) -> None:
         self.span_updates.append(kwargs)
+
+    @contextmanager
+    def start_as_current_observation(self, *, name: str, as_type: str = "span", **kwargs):
+        observation = RecordingObservation(name=name, as_type=as_type, start_kwargs=kwargs)
+        self.observations.append(observation)
+        yield observation
 
 
 def test_agent_records_prompt_version_with_v4_observation_api(monkeypatch) -> None:
@@ -67,3 +86,16 @@ def test_agent_records_prompt_version_with_v4_observation_api(monkeypatch) -> No
     assert span_update["version"] == "3"
     assert propagated[0]["metadata"]["correlation_id"] == "req-12345678"
     assert propagated[-1]["prompt"] is client.prompt
+
+    assert [obs.name for obs in client.observations] == ["retrieve-context", "llm-generate"]
+
+    retrieval_obs = client.observations[0]
+    assert retrieval_obs.as_type == "retriever"
+    assert retrieval_obs.update_calls[-1]["output"] == {"doc_count": 1}
+
+    generation_obs = client.observations[1]
+    assert generation_obs.as_type == "generation"
+    assert generation_obs.start_kwargs["model"] == agent.model
+    usage = generation_obs.update_calls[-1]["usage_details"]
+    assert usage["input"] > 0 and usage["output"] > 0
+    assert generation_obs.update_calls[-1]["cost_details"]["total"] >= 0

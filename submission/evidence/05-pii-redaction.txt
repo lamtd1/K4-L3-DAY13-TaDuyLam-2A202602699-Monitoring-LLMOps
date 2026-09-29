@@ -1,0 +1,44 @@
+INPUT (raw, sent to API, never written to disk):
+My email is duylam.pii-test@example.com and my phone is 0912345678, CCCD 012345678912, card 4111 1111 1111 1111
+
+LOG OUTPUT (data/logs.jsonl, request_received event, same correlation_id):
+{
+  "service": "api",
+  "payload": {
+    "message_preview": "My email is [REDACTED_EMAIL] and my phone is [REDACTED_PHONE_VN], CCCD [REDACTED..."
+  },
+  "event": "request_received",
+  "env": "dev",
+  "session_id": "pii-evidence-s01",
+  "user_id_hash": "cbb96d345bf3",
+  "feature": "qa",
+  "correlation_id": "req-8fb67698",
+  "model": "claude-sonnet-4-5",
+  "level": "info",
+  "ts": "2026-09-29T09:48:34.456346Z"
+}
+{
+  "service": "api",
+  "latency_ms": 157,
+  "ttft_ms": 51,
+  "tokens_in": 48,
+  "tokens_out": 110,
+  "cost_usd": 0.001794,
+  "quality_score": 0.9,
+  "tool_name": "retrieval",
+  "tool_success": true,
+  "payload": {
+    "answer_preview": "Starter answer. You should improve this output logic and add better quality chec..."
+  },
+  "event": "response_sent",
+  "env": "dev",
+  "session_id": "pii-evidence-s01",
+  "user_id_hash": "cbb96d345bf3",
+  "feature": "qa",
+  "correlation_id": "req-8fb67698",
+  "model": "claude-sonnet-4-5",
+  "level": "info",
+  "ts": "2026-09-29T09:48:34.616762Z"
+}
+RAW : My email is duylam.pii-test@example.com and my phone is 0912345678, CCCD 012345678912, card 4111 1111 1111 1111
+SAFE: My email is [REDACTED_EMAIL] and my phone is [REDACTED_PHONE_VN], CCCD [REDACTED_CCCD], card [REDACTED_CREDIT_CARD]
