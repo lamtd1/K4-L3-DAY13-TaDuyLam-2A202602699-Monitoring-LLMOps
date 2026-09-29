@@ -4,8 +4,8 @@
 
 ## 1. Thông tin học viên
 
-- **Họ và tên:**
-- **MSSV:**
+- **Họ và tên:** Tạ Duy Lam
+- **MSSV:** 2A202602699
 - **Lớp:** K4-L3A
 - **Repository URL:**
 - **Commit SHA cuối:**
@@ -37,13 +37,13 @@
 
 | Nội dung | Baseline | Kết quả cuối | Nhận xét |
 |---|---|---|---|
-| `validate_logs.py` | | | |
-| `validate_dashboard.py` | | | |
-| `pytest` | | | |
-| Số traces hợp lệ | | | |
-| Số PII leak | | | |
-| Latency P95 / TTFT P95 | | | |
-| Retrieval success rate | | | |
+| `validate_logs.py` | Estimated Score: 30/100 — 20/21 records thiếu required fields, 20/21 thiếu enrichment (context), 0 correlation ID unique | | App chưa emit structured log đầy đủ; `/health` trả `{"ok": true}` và `data/logs.jsonl` đã được tạo (21 dòng) nên pipeline log hoạt động, chỉ thiếu nội dung schema — đúng như kỳ vọng ở baseline trước khi implement logging/enrichment/correlation ID. |
+| `validate_dashboard.py` | HỢP LỆ: 6/6 panel có trong dashboard contract | | Dashboard contract đã đạt ngay từ baseline. |
+| `pytest` | 100% pass (`load_test.py` chạy xong, `pytest -q` xanh) | | Test suite hiện có không kiểm tra nội dung log/enrichment nên pass dù validator log fail. |
+| Số traces hợp lệ | 0 (chưa cấu hình Langfuse tracing) | | |
+| Số PII leak | 0 (validator: `[PASSED] PII scrubbing`) | | |
+| Latency P95 / TTFT P95 | Chưa đo (load_test.py log latency từng request, ví dụ 1695.4ms/514.8ms/... nhưng chưa tổng hợp P95) | | |
+| Retrieval success rate | Chưa đo | | |
 
 ## 4. Logging và PII
 
